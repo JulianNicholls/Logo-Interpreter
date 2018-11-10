@@ -8,12 +8,15 @@
   <title>Logo interpreter</title>
 </head>
 <body>
-  <textarea id="logo-text" cols="60" rows="5">fd 100 lt 60 fd 100 lt 60 fd 100</textarea>
-
   <div class="wrapper">
+    <div class="left">
+      <textarea id="logo-text" cols="60" rows="5">fd 100 lt 60 fd 100 lt 60 fd 100</textarea>
+      <div class="info"></div>
+</div>
     <canvas id="logo-output" width="500" height="500"></canvas>
   </div>
 
+  <script src="turtle.js"></script>
   <script src="logo.js"></script>
 </body>
 </html>
