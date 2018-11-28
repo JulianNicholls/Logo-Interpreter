@@ -37,11 +37,13 @@ canvas {
 #info {
   background: #eee;
   color: #333;
+  font-family: monospace;
   font-size: 0.9rem;
   height: 400px;
   margin-top: 1rem;
   overflow: scroll;
   padding: 0.5rem;
+  white-space: pre;
   width: 100%;
 }
 

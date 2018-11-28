@@ -32,7 +32,7 @@ runButton.addEventListener('click', event => {
 
   const parser = new LogoParser(logoText.value);
 
-  infoDiv.innerText = JSON.stringify(parser.tokens, null, 1);
+  infoDiv.innerText = JSON.stringify(parser.tokens, null, 2);
 
   const runner = new LogoRunner(turtle, parser.tokens);
 
