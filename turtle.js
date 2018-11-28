@@ -1,12 +1,20 @@
+// The direction starts straight up, however, actually its 270deg
+// because the co-ordinate system runs from the top.
 class Turtle {
   constructor(ctx) {
     this.ctx = ctx;
-    this.angle = -Math.PI / 2; // Straight up, however, actually 270deg because the co-oridnate system runs from the top
+
+    this.reset();
+  }
+
+  reset() {
+    this.angle = -Math.PI / 2;
     this.x = 250;
     this.y = 250;
     this._penDown = true;
 
-    ctx.strokeStyle = '#fff';
+    this.ctx.strokeStyle = '#fff';
+    this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 
   forward(delta) {

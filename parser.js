@@ -2,6 +2,7 @@ class Token {
   constructor(type, arg = null) {
     this.type = type;
     this.arg = arg ? parseInt(arg, 10) : arg;
+    this.loopCount = 0;
     this.commands = [];
   }
 
@@ -47,42 +48,65 @@ class LogoParser {
 
     if (chunk.length !== 0) chunks.push(chunk);
 
-    this.tokens = chunks;
+    this.chunks = chunks;
+  }
+
+  nextChunk() {
+    return this.chunks.shift();
+  }
+
+  tokenFromChunk(chunk) {
+    switch (chunk) {
+      case 'fd':
+      case 'forward':
+        return new Token('fd', this.nextChunk());
+
+      case 'left':
+      case 'lt':
+        return new Token('lt', this.nextChunk());
+
+      case 'right':
+      case 'rt':
+        return new Token('rt', this.nextChunk());
+
+      case 'penup':
+      case 'pu':
+        return new Token('pu');
+
+      case 'pendown':
+      case 'pd':
+        return new Token('pd');
+    }
+
+    console.error('Unrecognised:', chunk);
+    return new Token('invalid');
   }
 
   tokenise() {
-    const chunks = [...this.tokens];
     let chunk;
 
     this.tokens = [];
 
-    while ((chunk = chunks.shift()) !== undefined) {
-      switch (chunk) {
-        case 'fd':
-        case 'forward':
-          this.tokens.push(new Token('fd', chunks.shift()));
-          break;
+    while ((chunk = this.nextChunk()) !== undefined) {
+      if (chunk === 'repeat') {
+        const token = new Token('repeat');
+        let next = this.nextChunk();
 
-        case 'left':
-        case 'lt':
-          this.tokens.push(new Token('lt', chunks.shift()));
-          break;
+        next = parseInt(next, 10);
 
-        case 'right':
-        case 'rt':
-          this.tokens.push(new Token('rt', chunks.shift()));
-          break;
+        if (isNaN(next) || this.nextChunk() !== '[') {
+          console.error('Error following repeat, expected nn [, got', next);
+          return;
+        }
 
-        case 'penup':
-        case 'pu':
-          this.tokens.push(new Token('pu'));
-          break;
+        token.loopCount = next;
 
-        case 'pendown':
-        case 'pd':
-          this.tokens.push(new Token('pd'));
-          break;
-      }
+        while ((next = this.nextChunk()) !== ']') {
+          token.addCommandToken(this.tokenFromChunk(next));
+        }
+
+        this.tokens.push(token);
+      } else this.tokens.push(this.tokenFromChunk(chunk));
     }
   }
 }
