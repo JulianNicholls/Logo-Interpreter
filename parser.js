@@ -1,13 +1,19 @@
 class Token {
   constructor(type, arg = null) {
     this.type = type;
-    this.arg = arg ? parseInt(arg, 10) : arg;
+    this.arg = this.parseArg(arg);
     this.loopCount = 0;
     this.commands = [];
   }
 
   addCommandToken(token) {
     this.commands.push(token);
+  }
+
+  parseArg(arg) {
+    if (!arg || arg[0] === '#') return arg;
+
+    return parseInt(arg, 10);
   }
 }
 
@@ -43,7 +49,7 @@ class LogoParser {
         }
 
         chunks.push(ch);
-      } else if (/[a-z0-9]/.test(ch)) chunk += ch;
+      } else if (/[a-z0-9#]/.test(ch)) chunk += ch;
     }
 
     if (chunk.length !== 0) chunks.push(chunk);
@@ -76,6 +82,10 @@ class LogoParser {
       case 'pendown':
       case 'pd':
         return new Token('pd');
+
+      case 'color':
+      case 'colour':
+        return new Token('clr', this.nextChunk());
     }
 
     console.error('Unrecognised:', chunk);

@@ -29,6 +29,10 @@ class LogoRunner {
           turtle.penDown();
           break;
 
+        case 'clr':
+          turtle.colour(arg);
+          break;
+
         case 'repeat': // Skip for now
           for (let i = 0; i < loopCount; ++i) {
             this.run(commands);

@@ -47,6 +47,11 @@ class Turtle {
     this.angle = newAngle;
   }
 
+  colour(colour) {
+    console.log({ colour });
+    this.ctx.strokeStyle = colour;
+  }
+
   penUp() {
     this._penDown = false;
   }
