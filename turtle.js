@@ -48,7 +48,6 @@ class Turtle {
   }
 
   colour(colour) {
-    console.log({ colour });
     this.ctx.strokeStyle = colour;
   }
 

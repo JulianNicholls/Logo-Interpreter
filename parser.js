@@ -86,19 +86,8 @@ class LogoParser {
       case 'color':
       case 'colour':
         return new Token('clr', this.nextChunk());
-    }
 
-    console.error('Unrecognised:', chunk);
-    return new Token('invalid');
-  }
-
-  tokenise() {
-    let chunk;
-
-    this.tokens = [];
-
-    while ((chunk = this.nextChunk()) !== undefined) {
-      if (chunk === 'repeat') {
+      case 'repeat':
         const token = new Token('repeat');
         let next = this.nextChunk();
 
@@ -115,8 +104,19 @@ class LogoParser {
           token.addCommandToken(this.tokenFromChunk(next));
         }
 
-        this.tokens.push(token);
-      } else this.tokens.push(this.tokenFromChunk(chunk));
+        return token;
     }
+
+    console.error('Unrecognised:', chunk);
+    return new Token('invalid');
+  }
+
+  tokenise() {
+    let chunk;
+
+    this.tokens = [];
+
+    while ((chunk = this.nextChunk()) !== undefined)
+      this.tokens.push(this.tokenFromChunk(chunk));
   }
 }
