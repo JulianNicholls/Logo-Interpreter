@@ -24,7 +24,7 @@ canvas {
 }
 
 .wrapper {
-  align-items: center;
+  align-items: start;
   display: flex;
   justify-content: start;
 }
@@ -39,9 +39,9 @@ canvas {
   color: #333;
   font-family: monospace;
   font-size: 0.9rem;
-  height: 400px;
+  height: 55vh;
   margin-top: 1rem;
-  overflow: scroll;
+  overflow: auto;
   padding: 0.5rem;
   white-space: pre;
   width: 100%;
@@ -51,9 +51,9 @@ button {
   background: #243aa8;
   border: 1px solid #1B5D7E;
   color: white;
-  margin-right: 0.5rem;
+  margin: 0.5rem 1rem 0 0;
   outline: none;
-  padding: 0.3rem 0.5rem;
+  padding: 0.5rem 1rem;
 }
 
 button:hover {
