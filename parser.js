@@ -24,37 +24,32 @@ class LogoParser {
 
   setText(text) {
     this.text = text;
-    this.split();
+    this.chunks = [];
+    this.lexer();
     this.tokenise();
-    this.curToken = 0;
   }
 
-  split() {
+  lexer() {
     const stripped = this.text.toLowerCase().replace(/\s+/g, ' ');
-    const chunks = [];
     let chunk = '';
 
-    for (let idx = 0; idx < stripped.length; ++idx) {
-      const ch = stripped.charAt(idx);
-
+    stripped.split('').forEach(ch => {
       if (ch === ' ') {
         if (chunk.length !== 0) {
-          chunks.push(chunk);
+          this.chunks.push(chunk);
           chunk = '';
         }
       } else if (ch == '[' || ch === ']') {
         if (chunk.length !== 0) {
-          chunks.push(chunk);
+          this.chunks.push(chunk);
           chunk = '';
         }
 
-        chunks.push(ch);
+        this.chunks.push(ch);
       } else if (/[a-z0-9#]/.test(ch)) chunk += ch;
-    }
+    });
 
-    if (chunk.length !== 0) chunks.push(chunk);
-
-    this.chunks = chunks;
+    if (chunk.length !== 0) this.chunks.push(chunk);
   }
 
   nextChunk() {
@@ -88,27 +83,31 @@ class LogoParser {
         return new Token('clr', this.nextChunk());
 
       case 'repeat':
-        const token = new Token('repeat');
-        let next = this.nextChunk();
-
-        next = parseInt(next, 10);
-
-        if (isNaN(next) || this.nextChunk() !== '[') {
-          console.error('Error following repeat, expected nn [, got', next);
-          return;
-        }
-
-        token.loopCount = next;
-
-        while ((next = this.nextChunk()) !== ']') {
-          token.addCommandToken(this.tokenFromChunk(next));
-        }
-
-        return token;
+        return this.parseRepeat();
     }
 
     console.error('Unrecognised:', chunk);
     return new Token('invalid');
+  }
+
+  parseRepeat() {
+    const token = new Token('repeat');
+    let next = this.nextChunk();
+
+    next = parseInt(next, 10);
+
+    if (isNaN(next) || this.nextChunk() !== '[') {
+      console.error('Error following repeat, expected nn [, got', next);
+      return;
+    }
+
+    token.loopCount = next;
+
+    while ((next = this.nextChunk()) !== ']') {
+      token.addCommandToken(this.tokenFromChunk(next));
+    }
+
+    return token;
   }
 
   tokenise() {
