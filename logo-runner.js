@@ -4,41 +4,44 @@ class LogoRunner {
     this.tokens = tokens;
   }
 
-  run(tokens = this.tokens) {
+  runCommand(token) {
     const { turtle } = this;
+    const { type, arg, loopCount, commands } = token;
 
-    tokens.forEach(({ type, arg, loopCount, commands }) => {
-      switch (type) {
-        case 'fd':
-          turtle.forward(arg);
-          break;
+    switch (type) {
+      case 'fd':
+        turtle.forward(arg);
+        break;
 
-        case 'lt':
-          turtle.left(arg);
-          break;
+      case 'lt':
+        turtle.left(arg);
+        break;
 
-        case 'rt':
-          turtle.right(arg);
-          break;
+      case 'rt':
+        turtle.right(arg);
+        break;
 
-        case 'pu':
-          turtle.penUp();
-          break;
+      case 'pu':
+        turtle.penUp();
+        break;
 
-        case 'pd':
-          turtle.penDown();
-          break;
+      case 'pd':
+        turtle.penDown();
+        break;
 
-        case 'clr':
-          turtle.colour(arg);
-          break;
+      case 'clr':
+        turtle.colour(arg);
+        break;
 
-        case 'repeat':
-          for (let i = 0; i < loopCount; ++i) {
-            this.run(commands);
-          }
-          break;
-      }
-    });
+      case 'repeat':
+        for (let i = 0; i < loopCount; ++i) {
+          this.run(commands);
+        }
+        break;
+    }
+  }
+
+  run(tokens = this.tokens) {
+    tokens.forEach(token => this.runCommand(token));
   }
 }
