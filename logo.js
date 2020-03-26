@@ -1,5 +1,6 @@
 const canvas = document.getElementById('logo-output');
 const ctx = canvas.getContext('2d');
+
 const logoText = document.getElementById('logo-text');
 
 const runButton = document.getElementById('run');

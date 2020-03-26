@@ -9,8 +9,8 @@ class Turtle {
 
   reset() {
     this.angle = -Math.PI / 2;
-    this.x = 250;
-    this.y = 250;
+    this.x = 300;
+    this.y = 300;
     this._penDown = true;
 
     this.ctx.strokeStyle = '#fff';

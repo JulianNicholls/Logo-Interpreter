@@ -33,7 +33,7 @@ class LogoRunner {
           turtle.colour(arg);
           break;
 
-        case 'repeat': // Skip for now
+        case 'repeat':
           for (let i = 0; i < loopCount; ++i) {
             this.run(commands);
           }
