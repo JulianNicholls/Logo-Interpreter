@@ -42,6 +42,6 @@ class LogoRunner {
   }
 
   run(tokens = this.tokens) {
-    tokens.forEach(token => this.runCommand(token));
+    tokens.forEach((token) => this.runCommand(token));
   }
 }
