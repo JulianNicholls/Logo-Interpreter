@@ -4,7 +4,7 @@ class LogoRunner {
     this.tokens = tokens;
   }
 
-  runCommand(token) {
+  async runCommand(token) {
     const { turtle } = this;
     const { type, arg, loopCount, commands } = token;
 
@@ -35,13 +35,16 @@ class LogoRunner {
 
       case 'repeat':
         for (let i = 0; i < loopCount; ++i) {
-          this.run(commands);
+          await this.run(commands);
         }
         break;
     }
   }
 
-  run(tokens = this.tokens) {
-    tokens.forEach((token) => this.runCommand(token));
+  async run(tokens = this.tokens) {
+    for(let i = 0; i < tokens.length; ++i) {
+      this.runCommand(tokens[i]);
+      await new Promise(resolve => setTimeout(resolve, 20));
+    }
   }
 }
